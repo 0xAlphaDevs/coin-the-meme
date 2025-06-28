@@ -25,7 +25,7 @@ export default function Home() {
               <Zap className="w-5 h-5 text-white" />
             </div>
             <span className="text-2xl font-bold bg-gradient-to-r from-green-600 to-yellow-600 bg-clip-text text-transparent">
-              Klyro
+              Coin the Meme
             </span>
           </div>
           <div className="hidden md:flex items-center space-x-8">
