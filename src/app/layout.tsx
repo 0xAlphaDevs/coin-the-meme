@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Klyro",
+  title: "Coin-the-Meme",
   description: "Your meme generator for turning memes into valuable coins.",
 };
 
