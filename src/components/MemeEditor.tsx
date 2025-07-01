@@ -135,10 +135,12 @@ export const MemeEditor = () => {
     const imgElement = new Image();
     imgElement.src = imageUrl;
 
-    const image = new fabric.FabricImage(imgElement);
-    canvas.add(image);
-    canvas.setActiveObject(image);
-    canvas.renderAll();
+    imgElement.onload = () => {
+      const image = new fabric.FabricImage(imgElement);
+      canvas.add(image);
+      canvas.setActiveObject(image);
+      canvas.renderAll();
+    };
   };
 
   // TO DO : modify this
