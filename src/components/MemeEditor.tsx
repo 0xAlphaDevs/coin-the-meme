@@ -38,6 +38,8 @@ export const MemeEditor = () => {
   const [isBold, setIsBold] = useState(false);
   const [isItalic, setIsItalic] = useState(false);
   const [isUppercase, setIsUppercase] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [backgroundImage, setBackgroundImage] = useState<fabric.FabricImage | null>(null);
 
   useEffect(() => {
     if (!canvasEl.current) return;
@@ -102,6 +104,15 @@ export const MemeEditor = () => {
     };
   }, []);
 
+
+  const resizeCanvas = (width: number, height: number) => {
+    if (!canvas) return;
+
+    canvas.setDimensions({ width, height });
+    canvas.renderAll();
+  };
+
+
   const addNewText = () => {
     if (!canvas) return;
 
@@ -124,24 +135,55 @@ export const MemeEditor = () => {
     canvas.renderAll();
   };
 
-  // TO DO : modify this
-  const addImage = () => {
-    if (!canvas) return;
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file || !canvas) return;
 
-    // Example image URL, replace with your own
-    const imageUrl = "/meme-template-1.jpeg";
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const imgElement = new Image();
+      imgElement.src = e.target?.result as string;
 
-    // create HTMLImage element and pass to fabric.FabricImage
-    const imgElement = new Image();
-    imgElement.src = imageUrl;
+      imgElement.onload = () => {
+        // Remove existing background image if any
+        if (backgroundImage) {
+          canvas.remove(backgroundImage);
+        }
 
-    imgElement.onload = () => {
-      const image = new fabric.FabricImage(imgElement);
-      canvas.add(image);
-      canvas.setActiveObject(image);
-      canvas.renderAll();
+        // Create new fabric image
+        const image = new fabric.FabricImage(imgElement);
+
+        // Resize canvas to match image dimensions
+        canvas.setDimensions({ width: imgElement.width, height: imgElement.height });
+
+        // Scale image to fit canvas if needed
+        const scaleX = imgElement.width / imgElement.width;
+        const scaleY = imgElement.height / imgElement.height;
+
+        image.set({
+          left: 0,
+          top: 0,
+          scaleX: scaleX,
+          scaleY: scaleY,
+          selectable: false, // Make background non-selectable
+          evented: false, // Make background non-interactive
+        });
+
+        // Add image as background (send to back)
+        canvas.add(image);
+        canvas.sendObjectToBack(image);
+        setBackgroundImage(image);
+        canvas.renderAll();
+      };
     };
+    reader.readAsDataURL(file);
   };
+
+
+  const addImage = () => {
+    fileInputRef.current?.click();
+  };
+
 
   // TO DO : modify this
   const downloadImage = () => {
@@ -202,6 +244,14 @@ export const MemeEditor = () => {
 
   return (
     <div className="flex gap-6 p-6 max-w-6xl mx-auto">
+      {/* Hidden file input */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        onChange={handleImageUpload}
+        className="hidden"
+      />
       {/* Canvas Section */}
       <div className="flex-1">
         <div className="text-center mb-4">
