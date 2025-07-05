@@ -3,47 +3,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as fabric from "fabric"; // v6
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Bold, Italic, Type, Plus, Download, Coins, Star } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-
-// Common meme fonts (similar to imgflip)
-const MEME_FONTS = [
-  "Impact",
-  "Arial Black",
-  "Comic Sans MS",
-  "Times New Roman",
-  "Helvetica",
-  "Verdana",
-  "Georgia",
-  "Trebuchet MS",
-  "Arial",
-  "Courier New",
-];
-
-// Meme templates (placeholder URLs - you can replace with actual meme templates)
-const MEME_TEMPLATES = [
-  { id: 1, name: "Drake Pointing", url: "/meme-1.png" },
-  { id: 2, name: "Distracted Boyfriend", url: "/meme-2.png" },
-  { id: 3, name: "Woman Yelling at Cat", url: "/meme-3.png" },
-  { id: 4, name: "This is Fine", url: "/meme-4.png" },
-  { id: 5, name: "Expanding Brain", url: "/meme-5.png" },
-  { id: 6, name: "Change My Mind", url: "/meme-6.png" },
-]
+import { MEME_FONTS, MEME_TEMPLATES } from "@/lib/constants";
 
 export const MemeEditor = () => {
   const canvasEl = useRef<HTMLCanvasElement>({} as HTMLCanvasElement);
   const [canvas, setCanvas] = React.useState<fabric.Canvas>();
-  const [selectedObject, setSelectedObject] = useState<fabric.Textbox | null>(
-    null
-  );
+  const [selectedObject, setSelectedObject] = useState<fabric.Textbox | null>(null);
   const [fontSize, setFontSize] = useState(20);
   const [fontFamily, setFontFamily] = useState("Impact");
   const [isBold, setIsBold] = useState(false);
@@ -93,7 +62,6 @@ export const MemeEditor = () => {
         setIsItalic(textObj.fontStyle === "italic");
       }
     });
-
     initialCanvas.on("selection:updated", (e) => {
       //fires when you switch between different text objects.
       const activeObject = e.selected?.[0];
@@ -106,12 +74,10 @@ export const MemeEditor = () => {
         setIsItalic(textObj.fontStyle === "italic");
       }
     });
-
     initialCanvas.on("selection:cleared", () => {
       //fires when you click off everything.
       setSelectedObject(null);
     });
-
     return () => {
       initialCanvas.dispose();
     };
@@ -142,28 +108,22 @@ export const MemeEditor = () => {
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file || !canvas) return;
-
     const reader = new FileReader();
     reader.onload = (e) => {
       const imgElement = new Image();
       imgElement.src = e.target?.result as string;
-
       imgElement.onload = () => {
         // Remove existing background image if any
         if (backgroundImage) {
           canvas.remove(backgroundImage);
         }
-
         // Create new fabric image
         const image = new fabric.FabricImage(imgElement);
-
         // Resize canvas to match image dimensions
         canvas.setDimensions({ width: imgElement.width, height: imgElement.height });
-
         // Scale image to fit canvas if needed
         const scaleX = imgElement.width / imgElement.width;
         const scaleY = imgElement.height / imgElement.height;
-
         image.set({
           left: 0,
           top: 0,
@@ -172,7 +132,6 @@ export const MemeEditor = () => {
           selectable: false, // Make background non-selectable
           evented: false, // Make background non-interactive
         });
-
         // Add image as background (send to back)
         canvas.add(image);
         canvas.sendObjectToBack(image);
@@ -185,24 +144,20 @@ export const MemeEditor = () => {
 
   const handleTemplateSelect = (templateUrl: string) => {
     if (!canvas) return
-
     const imgElement = new Image()
     imgElement.src = templateUrl
     imgElement.onload = () => {
       if (backgroundImage) {
         canvas.remove(backgroundImage)
       }
-
       const image = new fabric.FabricImage(imgElement)
       canvas.setDimensions({ width: imgElement.width, height: imgElement.height })
-
       image.set({
         left: 0,
         top: 0,
         selectable: false,
         evented: false,
       })
-
       canvas.add(image)
       canvas.sendObjectToBack(image)
       setBackgroundImage(image)
@@ -223,9 +178,7 @@ export const MemeEditor = () => {
 
   const downloadImage = () => {
     if (!canvas) return;
-
     const dataUrl = canvas.toDataURL();
-
     const link = document.createElement("a");
     link.href = dataUrl;
     link.download = "meme.png";
@@ -236,7 +189,6 @@ export const MemeEditor = () => {
 
   const updateSelectedText = (property: string, value: any) => {
     if (!selectedObject || !canvas) return;
-
     selectedObject.set(property, value);
     canvas.renderAll();
   };
@@ -265,10 +217,8 @@ export const MemeEditor = () => {
 
   const toggleUppercase = () => {
     if (!selectedObject || !canvas) return;
-
     const newUppercase = !isUppercase;
     setIsUppercase(newUppercase);
-
     const currentText = selectedObject.text || "";
     const newText = newUppercase
       ? currentText.toUpperCase()
@@ -440,7 +390,6 @@ export const MemeEditor = () => {
                 className="w-full h-10 rounded border"
               />
             </div>
-
             <div>
               <label className="block text-sm font-medium mb-2 text-gray-700">Stroke Color</label>
               <input
@@ -451,7 +400,6 @@ export const MemeEditor = () => {
                 className="w-full h-10 rounded border"
               />
             </div>
-
             <div>
               <label className="block text-sm font-medium mb-2 text-gray-700">
                 Stroke Width: {selectedObject?.strokeWidth || 0}px
