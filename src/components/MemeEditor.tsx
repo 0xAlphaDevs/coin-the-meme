@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Bold, Italic, Type, Plus, Download, Coins, Star } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { MEME_FONTS, MEME_TEMPLATES } from "@/lib/constants";
+import CoinMemeButton from "./CoinMemeButton";
 
 export const MemeEditor = () => {
   const canvasEl = useRef<HTMLCanvasElement>({} as HTMLCanvasElement);
@@ -420,7 +421,8 @@ export const MemeEditor = () => {
 
       {/* Generate Meme Dialog */}
       <Dialog open={isGenerateDialogOpen} onOpenChange={setIsGenerateDialogOpen}>
-        <DialogContent className="max-w-2xl">
+
+        <DialogContent className="">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold text-center">Your Meme is Ready!</DialogTitle>
           </DialogHeader>
@@ -434,24 +436,16 @@ export const MemeEditor = () => {
                 />
               </div>
             )}
-            <div className="flex gap-4 justify-center">
-              <Button onClick={downloadImage} className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3">
+            <div className="flex flex-col gap-4 justify-center">
+              <Button onClick={downloadImage} className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 ">
                 <Download className="w-5 h-5 mr-2" />
                 Download
               </Button>
-              <Button
-                onClick={() => {
-                  // Placeholder for "Coin the Meme" functionality
-                  alert("Coin the Meme feature coming soon!")
-                }}
-                className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white px-6 py-3"
-              >
-                <Coins className="w-5 h-5 mr-2" />
-                Coin the Meme
-              </Button>
+              <CoinMemeButton imageBlob={generatedImageUrl} />
             </div>
           </div>
         </DialogContent>
+
       </Dialog>
     </div>
   );
