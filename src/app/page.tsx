@@ -197,7 +197,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="relative z-10 px-4 py-2  text-center">
         <a href="https://www.alphadevs.dev/" target="_blank" rel="noopener noreferrer" className="font-semibold">
-          @alphadevs 2024
+          @alphadevs 2025
         </a>
       </footer>
     </div>
