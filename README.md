@@ -4,7 +4,13 @@ Create memes and launch them as coins on Zora. Coin-the-meme is your meme genera
 
 ### Features
 
--
+- Meme Editor with custom fonts, colors, and templates
+
+- Upload your own image or use pre-built meme templates
+
+- Add & style meme text (font, size, color, stroke)
+
+- Deploy meme coins on-chain using @zoralabs/coins-sdk
 
 ## Table of Contents
 
@@ -17,7 +23,7 @@ Create memes and launch them as coins on Zora. Coin-the-meme is your meme genera
 ## Links
 
 - [Deployed URL](https://coin-the-meme.vercel.app/)
-- [Presentation]()
+- [Presentation](https://www.canva.com/design/DAGsj5LdZc4/3wlD1rjzrz4EGQVOf4GnwQ/view)
 - [Demo Video]()
 
 ## Sponsers Tech Stack
@@ -28,6 +34,10 @@ Create memes and launch them as coins on Zora. Coin-the-meme is your meme genera
 
 **_Landing Page_**
 ![Landing Page](/public/landing-page.png)
+
+## Future Vision
+
+In the next version, we plan to integrate AI-powered meme image generation. Users will be able to simply enter a meme idea or prompt, and our AI system will generate a complete meme image for editing and coining — streamlining the creative process even further.
 
 ## Team
 
