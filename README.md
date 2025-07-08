@@ -29,6 +29,7 @@ Create memes and launch them as coins on Zora. Coin-the-meme is your meme genera
 ## Sponsers Tech Stack
 
 - @zoralabs/coins-sdk
+- wagmi + connectkit
 
 ## App Demo Screenshots
 
