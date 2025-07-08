@@ -9,8 +9,11 @@ import { Bold, Italic, Type, Plus, Download, Coins, Star } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { MEME_FONTS, MEME_TEMPLATES } from "@/lib/constants";
 import CoinMemeButton from "./CoinMemeButton";
+import { useAccount } from "wagmi";
+import { ConnectKitButton } from "connectkit";
 
 export const MemeEditor = () => {
+  const { isConnected } = useAccount();
   const canvasEl = useRef<HTMLCanvasElement>({} as HTMLCanvasElement);
   const [canvas, setCanvas] = React.useState<fabric.Canvas>();
   const [selectedObject, setSelectedObject] = useState<fabric.Textbox | null>(null);
@@ -229,224 +232,239 @@ export const MemeEditor = () => {
   };
 
   return (
-    <div className="flex gap-6 p-6 mx-auto px-16 bg-gradient-to-br from-green-100 via-yellow-50 to-white">
-      {/* Hidden file input */}
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept="image/*"
-        onChange={handleImageUpload}
-        className="hidden"
-      />
-      {/* Canvas Section */}
-      <div className="flex-1 ">
-        <div className="text-center mb-4">
-          <h1 className="text-4xl font-bold mb-2 mt-4">Meme Editor</h1>
-        </div>
-
-        <div className="flex justify-center mb-4 mt-16">
-          <canvas
-            ref={canvasEl}
-            className="border border-gray-300 rounded-lg shadow-lg"
-          />
-        </div>
-
-        <div className="text-center mt-10">
-          <Button
-            onClick={generateMeme}
-            className="bg-blue-500 hover:bg-blue-600"
-          >
-            <Star className="w-4 h-4 mr-2" />
-            Generate Meme
-          </Button>
-        </div>
-      </div>
-
-      {/* Controls Panel */}
-      <div className="space-y-6 mt-30">
-
-        {/* Image Controls */}
-        <Card className="bg-white/80 backdrop-blur-sm border-2 border-yellow-200 h-100 w-100">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-gray-800">
-              <Plus className="w-5 h-5" />
-              Image Controls
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <Button onClick={addImage} className="w-full bg-blue-500 hover:bg-blue-600 text-white">
-              <Plus className="w-4 h-4 mr-2" />
-              Add Image
-            </Button>
-
-            <div>
-              <h4 className="text-sm font-medium mb-3 text-gray-700">Meme Templates</h4>
-              <div className="grid grid-cols-3 gap-2">
-                {MEME_TEMPLATES.map((template) => (
-                  <button
-                    key={template.id}
-                    onClick={() => handleTemplateSelect(template.url)}
-                    className="aspect-square border-2 border-gray-200 rounded-lg hover:border-blue-400 transition-colors overflow-hidden bg-gray-50"
-                    title={template.name}
+    <>
+      {
+        isConnected ? (
+          <div className="bg-gradient-to-br from-green-100 via-yellow-50 to-white">
+            <div className="flex justify-between items-center p-6 ">
+              <p className="text-2xl font-bold bg-gradient-to-r from-green-600 to-yellow-600 bg-clip-text text-transparent">Coin the Meme</p>
+              <ConnectKitButton />
+            </div>
+            <div className="flex gap-6 p-6 mx-auto px-16 bg-gradient-to-br from-green-100 via-yellow-50 to-white">
+              {/* Hidden file input */}
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                className="hidden"
+              />
+              {/* Canvas Section */}
+              <div className="flex-1 ">
+                <div className="text-center mb-4">
+                  <h1 className="text-4xl font-bold mb-2 mt-4">Meme Editor</h1>
+                </div>
+                <div className="flex justify-center mb-4 mt-16">
+                  <canvas
+                    ref={canvasEl}
+                    className="border border-gray-300 rounded-lg shadow-lg"
+                  />
+                </div>
+                <div className="text-center mt-10">
+                  <Button
+                    onClick={generateMeme}
+                    className="bg-blue-500 hover:bg-blue-600"
                   >
-                    <img
-                      src={template.url || "/placeholder.svg"}
-                      alt={template.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </button>
-                ))}
+                    <Star className="w-4 h-4 mr-2" />
+                    Generate Meme
+                  </Button>
+                </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Text Controls */}
-        <Card className="bg-white/80 backdrop-blur-sm border-2 border-green-200 w-100 h-160">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-gray-800">
-              <Type className="w-5 h-5" />
-              Text Controls
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {!selectedObject && (
-              <p className="text-sm text-gray-500 italic">Select a text object to edit its properties</p>
-            )}
-
-            <Button onClick={addNewText} className="w-full bg-green-500 hover:bg-green-600 text-white">
-              <Plus className="w-4 h-4 mr-2" />
-              Add Text
-            </Button>
-
-            {/* Font Family */}
-            <div>
-              <label className="block text-sm font-medium mb-2 text-gray-700">Font Family</label>
-              <Select value={fontFamily} onValueChange={handleFontFamilyChange}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {MEME_FONTS.map((font) => (
-                    <SelectItem key={font} value={font} style={{ fontFamily: font }}>
-                      {font}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Font Size */}
-            <div>
-              <label className="block text-sm font-medium mb-2 text-gray-700">Font Size: {fontSize}px</label>
-              <input
-                type="range"
-                min="12"
-                max="72"
-                value={fontSize}
-                onChange={(e) => handleFontSizeChange(Number(e.target.value))}
-                className="w-full"
-              />
-            </div>
-
-            {/* Text Formatting */}
-            <div>
-              <label className="block text-sm font-medium mb-2 text-gray-700">Text Formatting</label>
-              <div className="flex gap-2">
-                <Button
-                  variant={isBold ? "default" : "outline"}
-                  size="sm"
-                  onClick={toggleBold}
-                  disabled={!selectedObject}
-                >
-                  <Bold className="w-4 h-4" />
-                </Button>
-                <Button
-                  variant={isItalic ? "default" : "outline"}
-                  size="sm"
-                  onClick={toggleItalic}
-                  disabled={!selectedObject}
-                >
-                  <Italic className="w-4 h-4" />
-                </Button>
-                <Button
-                  variant={isUppercase ? "default" : "outline"}
-                  size="sm"
-                  onClick={toggleUppercase}
-                  disabled={!selectedObject}
-                >
-                  ABC
-                </Button>
+              {/* Controls Panel */}
+              <div className="space-y-6 mt-30">
+                {/* Image Controls */}
+                <Card className="bg-white/80 backdrop-blur-sm border-2 border-yellow-200 h-100 w-100">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-gray-800">
+                      <Plus className="w-5 h-5" />
+                      Image Controls
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <Button onClick={addImage} className="w-full bg-blue-500 hover:bg-blue-600 text-white">
+                      <Plus className="w-4 h-4 mr-2" />
+                      Add Image
+                    </Button>
+                    <div>
+                      <h4 className="text-sm font-medium mb-3 text-gray-700">Meme Templates</h4>
+                      <div className="grid grid-cols-3 gap-2">
+                        {MEME_TEMPLATES.map((template) => (
+                          <button
+                            key={template.id}
+                            onClick={() => handleTemplateSelect(template.url)}
+                            className="aspect-square border-2 border-gray-200 rounded-lg hover:border-blue-400 transition-colors overflow-hidden bg-gray-50"
+                            title={template.name}
+                          >
+                            <img
+                              src={template.url || "/placeholder.svg"}
+                              alt={template.name}
+                              className="w-full h-full object-cover"
+                            />
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+                {/* Text Controls */}
+                <Card className="bg-white/80 backdrop-blur-sm border-2 border-green-200 w-100 h-160">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-gray-800">
+                      <Type className="w-5 h-5" />
+                      Text Controls
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {!selectedObject && (
+                      <p className="text-sm text-gray-500 italic">Select a text object to edit its properties</p>
+                    )}
+                    <Button onClick={addNewText} className="w-full bg-green-500 hover:bg-green-600 text-white">
+                      <Plus className="w-4 h-4 mr-2" />
+                      Add Text
+                    </Button>
+                    {/* Font Family */}
+                    <div>
+                      <label className="block text-sm font-medium mb-2 text-gray-700">Font Family</label>
+                      <Select value={fontFamily} onValueChange={handleFontFamilyChange}>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {MEME_FONTS.map((font) => (
+                            <SelectItem key={font} value={font} style={{ fontFamily: font }}>
+                              {font}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    {/* Font Size */}
+                    <div>
+                      <label className="block text-sm font-medium mb-2 text-gray-700">Font Size: {fontSize}px</label>
+                      <input
+                        type="range"
+                        min="12"
+                        max="72"
+                        value={fontSize}
+                        onChange={(e) => handleFontSizeChange(Number(e.target.value))}
+                        className="w-full"
+                      />
+                    </div>
+                    {/* Text Formatting */}
+                    <div>
+                      <label className="block text-sm font-medium mb-2 text-gray-700">Text Formatting</label>
+                      <div className="flex gap-2">
+                        <Button
+                          variant={isBold ? "default" : "outline"}
+                          size="sm"
+                          onClick={toggleBold}
+                          disabled={!selectedObject}
+                        >
+                          <Bold className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          variant={isItalic ? "default" : "outline"}
+                          size="sm"
+                          onClick={toggleItalic}
+                          disabled={!selectedObject}
+                        >
+                          <Italic className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          variant={isUppercase ? "default" : "outline"}
+                          size="sm"
+                          onClick={toggleUppercase}
+                          disabled={!selectedObject}
+                        >
+                          ABC
+                        </Button>
+                      </div>
+                    </div>
+                    {/* Color Controls */}
+                    <div>
+                      <label className="block text-sm font-medium mb-2 text-gray-700">Text Color</label>
+                      <input
+                        type="color"
+                        defaultValue="#000000"
+                        onChange={(e) => updateSelectedText("fill", e.target.value)}
+                        disabled={!selectedObject}
+                        className="w-full h-10 rounded border"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2 text-gray-700">Stroke Color</label>
+                      <input
+                        type="color"
+                        defaultValue="#000000"
+                        onChange={(e) => updateSelectedText("stroke", e.target.value)}
+                        disabled={!selectedObject}
+                        className="w-full h-10 rounded border"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2 text-gray-700">
+                        Stroke Width: {selectedObject?.strokeWidth || 0}px
+                      </label>
+                      <input
+                        type="range"
+                        min="0"
+                        max="10"
+                        defaultValue="0"
+                        onChange={(e) => updateSelectedText("strokeWidth", Number(e.target.value))}
+                        disabled={!selectedObject}
+                        className="w-full"
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
-            </div>
 
-            {/* Color Controls */}
-            <div>
-              <label className="block text-sm font-medium mb-2 text-gray-700">Text Color</label>
-              <input
-                type="color"
-                defaultValue="#000000"
-                onChange={(e) => updateSelectedText("fill", e.target.value)}
-                disabled={!selectedObject}
-                className="w-full h-10 rounded border"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-2 text-gray-700">Stroke Color</label>
-              <input
-                type="color"
-                defaultValue="#000000"
-                onChange={(e) => updateSelectedText("stroke", e.target.value)}
-                disabled={!selectedObject}
-                className="w-full h-10 rounded border"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-2 text-gray-700">
-                Stroke Width: {selectedObject?.strokeWidth || 0}px
-              </label>
-              <input
-                type="range"
-                min="0"
-                max="10"
-                defaultValue="0"
-                onChange={(e) => updateSelectedText("strokeWidth", Number(e.target.value))}
-                disabled={!selectedObject}
-                className="w-full"
-              />
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+              {/* Generate Meme Dialog */}
+              <Dialog open={isGenerateDialogOpen} onOpenChange={setIsGenerateDialogOpen}>
+                <DialogContent className="">
+                  <DialogHeader>
+                    <DialogTitle className="text-2xl font-bold text-center">Your Meme is Ready!</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-6">
+                    {generatedImageUrl && (
+                      <div className="flex justify-center">
+                        <img
+                          src={generatedImageUrl || "/placeholder.svg"}
+                          alt="Generated Meme"
+                          className="max-w-full max-h-96 rounded-lg shadow-lg"
+                        />
+                      </div>
+                    )}
+                    <div className="flex flex-col gap-4 justify-center">
+                      <Button onClick={downloadImage} className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 ">
+                        <Download className="w-5 h-5 mr-2" />
+                        Download
+                      </Button>
+                      <CoinMemeButton imageBlob={generatedImageUrl} />
+                    </div>
+                  </div>
+                </DialogContent>
 
-      {/* Generate Meme Dialog */}
-      <Dialog open={isGenerateDialogOpen} onOpenChange={setIsGenerateDialogOpen}>
-
-        <DialogContent className="">
-          <DialogHeader>
-            <DialogTitle className="text-2xl font-bold text-center">Your Meme is Ready!</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-6">
-            {generatedImageUrl && (
-              <div className="flex justify-center">
-                <img
-                  src={generatedImageUrl || "/placeholder.svg"}
-                  alt="Generated Meme"
-                  className="max-w-full max-h-96 rounded-lg shadow-lg"
-                />
-              </div>
-            )}
-            <div className="flex flex-col gap-4 justify-center">
-              <Button onClick={downloadImage} className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 ">
-                <Download className="w-5 h-5 mr-2" />
-                Download
-              </Button>
-              <CoinMemeButton imageBlob={generatedImageUrl} />
+              </Dialog>
             </div>
           </div>
-        </DialogContent>
-
-      </Dialog>
-    </div>
+        ) : (
+          <div className=" h-screen bg-gradient-to-br from-green-100 via-yellow-50 to-white">
+            <div className="flex justify-between items-center p-6 ">
+              <p className="text-2xl font-bold bg-gradient-to-r from-green-600 to-yellow-600 bg-clip-text text-transparent">Coin the Meme</p>
+              <ConnectKitButton />
+            </div>
+            <div className="flex flex-col gap-4 items-center justify-center pt-24">
+              <img
+                src="/logo.png"
+                alt="Logo"
+                className="w-48 h-48"
+              />
+              <p className="text-gray-600 font-semibold">Connect your wallet to create memes!</p>
+            </div>
+          </div>
+        )
+      }
+    </>
   );
 };
