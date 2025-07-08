@@ -435,8 +435,8 @@ export const MemeEditor = () => {
                         />
                       </div>
                     )}
-                    <div className="flex flex-col gap-4 justify-center">
-                      <Button onClick={downloadImage} className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 ">
+                    <div className="flex justify-center gap-4">
+                      <Button onClick={downloadImage} className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 " size={"lg"}>
                         <Download className="w-5 h-5 mr-2" />
                         Download
                       </Button>
@@ -444,7 +444,6 @@ export const MemeEditor = () => {
                     </div>
                   </div>
                 </DialogContent>
-
               </Dialog>
             </div>
           </div>

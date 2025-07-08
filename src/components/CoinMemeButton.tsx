@@ -19,21 +19,17 @@ import {
 import { ConnectKitButton } from 'connectkit'
 import { baseSepolia } from 'viem/chains'
 
-
 const CoinMemeButton = (imageBlob: { imageBlob: string }) => {
   const { address, isConnected } = useAccount()
   const [contractCallParams, setContractCallParams] = useState<any>(null)
   const [txnHash, setTxnHash] = useState<`0x${string}` | undefined>(undefined)
   const [isPreparing, setIsPreparing] = useState(false)
   const [isDeployed, setIsDeployed] = useState(false)
-
   const { writeContract, data: writeResult, status: writeStatus, error: writeError } = useWriteContract()
-
   const { data: receipt } = useWaitForTransactionReceipt({
     hash: txnHash,
     query: { enabled: !!txnHash },
   })
-
   const {
     data: simData,
     status: simStatus,
@@ -70,7 +66,6 @@ const CoinMemeButton = (imageBlob: { imageBlob: string }) => {
         alert('Please connect your wallet')
         return
       }
-
       console.log('🔄 Fetching logo...')
       setIsPreparing(true)
       const res = await fetch(imageBlob.imageBlob)
@@ -121,23 +116,16 @@ const CoinMemeButton = (imageBlob: { imageBlob: string }) => {
   }
 
   return (
-    <div className=" space-y-4 max-w-xl mx-auto">
-      {!isConnected && (
-        <div>
-          <ConnectKitButton />
-          <p className="text-xs text-gray-500">Connect your wallet to create a coin</p>
-        </div>
-      )}
-
+    <div className="">
       {isConnected && !isDeployed && (
         <>
           {!contractCallParams && (
             <button
               onClick={handleCreateCoin}
               disabled={isPreparing}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded disabled:opacity-50"
+              className="px-4 py-2 rounded-lg disabled:opacity-50"
             >
-              {isPreparing ? 'Preparing...' : 'Coin the Meme'}
+              {isPreparing ? <span className='font-semibold text-gray-800 bg-gray-200 rounded-lg px-6 py-3'> Preparing... </span> : <span className='bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white px-6 py-3 rounded-lg'> 🪙 Coin the Meme</span>}
             </button>
           )}
 
@@ -155,16 +143,23 @@ const CoinMemeButton = (imageBlob: { imageBlob: string }) => {
       )}
 
       {isDeployed && txnHash && (
-        <p className="text-sm mt-2">
+        <p className="text-sm mt-2 ">
           ⛓️ Txn:{' '}
           <a
             href={`https://sepolia.basescan.org/tx/${txnHash}`}
-            className="underline"
+            className="underline text-blue-500"
             target="_blank"
             rel="noopener noreferrer"
           >
             {txnHash}
           </a>
+          <br />
+          {(() => {
+            const coinDeployment = receipt ? getCoinCreateFromLogs(receipt) : undefined
+            return coinDeployment?.coin ? (
+              <p className=''> ✅ Deployed Coin:<a className='font-bold text-green-900' href={`https://testnet.zora.co/coin/bsep:${coinDeployment.coin}`} target='_blank'>{coinDeployment.coin}</a></p>
+            ) : null
+          })()}
         </p>
       )}
     </div>
