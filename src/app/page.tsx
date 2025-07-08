@@ -182,7 +182,7 @@ export default function Home() {
       <section className="relative z-10 px-6 py-16">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">Ready to Start?</h2>
-          <p className="text-xl text-gray-600 mb-8">Try Klyro now and turn your meme ideas into coinss</p>
+          <p className="text-xl text-gray-600 mb-8">Turn your meme ideas into coinss</p>
           <Button
             size="lg"
             className="bg-gradient-to-r from-green-600 to-yellow-500 hover:from-green-700 hover:to-yellow-600 text-lg px-12 py-4"
