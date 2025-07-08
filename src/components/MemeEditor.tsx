@@ -260,13 +260,17 @@ export const MemeEditor = () => {
                     className="border border-gray-300 rounded-lg shadow-lg"
                   />
                 </div>
-                <div className="text-center mt-10">
+                <div className="flex justify-center items-center gap-4 text-center mt-10">
                   <Button
                     onClick={generateMeme}
                     className="bg-blue-500 hover:bg-blue-600"
                   >
                     <Star className="w-4 h-4 mr-2" />
                     Generate Meme
+                  </Button>
+                  <Button onClick={downloadImage} className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3">
+                    <Download className="w-5 h-5 mr-2" />
+                    Download
                   </Button>
                 </div>
               </div>
@@ -435,11 +439,7 @@ export const MemeEditor = () => {
                         />
                       </div>
                     )}
-                    <div className="flex justify-center gap-4">
-                      <Button onClick={downloadImage} className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 " size={"lg"}>
-                        <Download className="w-5 h-5 mr-2" />
-                        Download
-                      </Button>
+                    <div className="px-34">
                       <CoinMemeButton imageBlob={generatedImageUrl} />
                     </div>
                   </div>
