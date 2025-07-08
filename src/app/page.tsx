@@ -48,7 +48,7 @@ export default function Home() {
                 </span>
               </h1>
               <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-                Your meme generator where popular memes become valuable coins.
+                Create memes and launch them as coins on Zora.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button
