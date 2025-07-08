@@ -22,7 +22,7 @@ Create memes and launch them as coins on Zora. Coin-the-meme is your meme genera
 
 - [Deployed URL](https://coin-the-meme.vercel.app/)
 - [Presentation](https://www.canva.com/design/DAGsj5LdZc4/3wlD1rjzrz4EGQVOf4GnwQ/view)
-- [Demo Video]()
+- [Demo Video](https://www.youtube.com/watch?v=BWh1C1OujEw&feature=youtu.be)
 
 ## Sponsers Tech Stack
 
