@@ -16,8 +16,7 @@ import {
   useWriteContract,
   useWaitForTransactionReceipt,
 } from 'wagmi'
-import { ConnectKitButton } from 'connectkit'
-import { baseSepolia } from 'viem/chains'
+import { base, baseSepolia } from 'viem/chains'
 
 const CoinMemeButton = (imageBlob: { imageBlob: string }) => {
   const { address, isConnected } = useAccount()
@@ -60,11 +59,13 @@ const CoinMemeButton = (imageBlob: { imageBlob: string }) => {
 
   useEffect(() => {
     if (receipt) {
-      const coinDeployment = getCoinCreateFromLogs(receipt)
-      console.log('✅ Coin deployed at:', coinDeployment?.coin)
-      setIsDeployed(true)
+      console.log("📜 Receipt:", receipt);
+      const coinDeployment = getCoinCreateFromLogs(receipt);
+      console.log('✅ Coin deployed at:', coinDeployment?.coin);
+      setIsDeployed(true);
     }
-  }, [receipt])
+  }, [receipt]);
+
 
   const handleCreateCoin = async () => {
     if (!coinName || !coinSymbol || !coinDescription) {
@@ -101,8 +102,8 @@ const CoinMemeButton = (imageBlob: { imageBlob: string }) => {
       const coinParams = {
         ...createMetadataParameters,
         payoutRecipient: address as Address,
-        currency: DeployCurrency.ETH,
-        chainId: baseSepolia.id,
+        currency: DeployCurrency.ZORA,
+        chainId: base.id,
 
       }
 
@@ -188,7 +189,7 @@ const CoinMemeButton = (imageBlob: { imageBlob: string }) => {
           <p className="text-sm mt-2 ">
             ⛓️ Txn:{' '}
             <a
-              href={`https://sepolia.basescan.org/tx/${txnHash}`}
+              href={`https://basescan.org/tx/${txnHash}`}
               className="underline text-blue-500"
               target="_blank"
               rel="noopener noreferrer"
@@ -199,7 +200,7 @@ const CoinMemeButton = (imageBlob: { imageBlob: string }) => {
             {(() => {
               const coinDeployment = receipt ? getCoinCreateFromLogs(receipt) : undefined
               return coinDeployment?.coin ? (
-                <p className=''> ✅ Deployed Coin:<a className='font-bold text-green-900' href={`https://testnet.zora.co/coin/bsep:${coinDeployment.coin}`} target='_blank'>{coinDeployment.coin}</a></p>
+                <span className=''> ✅ Deployed Coin:<a className='font-bold text-green-900' href={`https://zora.co/coin/base:${coinDeployment.coin}`} target='_blank'>{coinDeployment.coin}</a></span>
               ) : null
             })()}
           </p>
