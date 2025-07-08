@@ -16,7 +16,7 @@ Create memes and launch them as coins on Zora. Coin-the-meme is your meme genera
 
 ## Links
 
-- [Deployed URL]()
+- [Deployed URL](https://coin-the-meme.vercel.app/)
 - [Presentation]()
 - [Demo Video]()
 
