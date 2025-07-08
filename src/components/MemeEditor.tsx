@@ -14,7 +14,7 @@ import { ConnectKitButton } from "connectkit";
 
 export const MemeEditor = () => {
   const { isConnected } = useAccount();
-  const canvasEl = useRef<HTMLCanvasElement>({} as HTMLCanvasElement);
+  const canvasEl = useRef<HTMLCanvasElement | null>(null);
   const [canvas, setCanvas] = React.useState<fabric.Canvas>();
   const [selectedObject, setSelectedObject] = useState<fabric.Textbox | null>(null);
   const [fontSize, setFontSize] = useState(20);
@@ -28,7 +28,7 @@ export const MemeEditor = () => {
   const [generatedImageUrl, setGeneratedImageUrl] = useState<string>("")
 
   useEffect(() => {
-    if (!canvasEl.current) return;
+    if (!isConnected || !canvasEl.current) return;
 
     const options = {
       width: 750,
@@ -85,7 +85,7 @@ export const MemeEditor = () => {
     return () => {
       initialCanvas.dispose();
     };
-  }, []);
+  }, [isConnected]);
 
   const addNewText = () => {
     if (!canvas) return;
