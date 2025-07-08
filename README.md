@@ -34,9 +34,23 @@ Create memes and launch them as coins on Zora. Coin-the-meme is your meme genera
 **_Landing Page_**
 ![Landing Page](/public/landing-page.png)
 
+**_Meme Editor_**
+![Meme Editor](/public/meme-editor.png)
+
+**_Coin the Meme_**
+![Coin the Meme](/public/coin-the-meme.png)
+
+**_Coin on Zora.co_**
+![Coin on Zora.co](/public/coin-on-zora.png)
+
+**_Buy Coin_**
+![Buy Coin](/public/buy-coin.png)
+
 ## Future Vision
 
-In the next version, we plan to integrate AI-powered meme image generation. Users will be able to simply enter a meme idea or prompt, and our AI system will generate a complete meme image for editing and coining.
+- Refine meme creation tool and add support for AI based meme generation.
+- Build extensive library existing and new meme templates.
+- Improve UX and add more meme editing tools
 
 ## Team
 
