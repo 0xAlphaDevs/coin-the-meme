@@ -238,6 +238,7 @@ export const MemeEditor = () => {
           <div className="bg-gradient-to-br from-green-100 via-yellow-50 to-white">
             <div className="flex justify-between items-center p-6 ">
               <p className="text-2xl font-bold bg-gradient-to-r from-green-600 to-yellow-600 bg-clip-text text-transparent">Coin the Meme</p>
+              <h1 className="text-4xl font-bold mb-2 mt-4">Meme Editor</h1>
               <ConnectKitButton />
             </div>
             <div className="flex gap-6 p-6 mx-auto px-16 bg-gradient-to-br from-green-100 via-yellow-50 to-white">
@@ -251,9 +252,6 @@ export const MemeEditor = () => {
               />
               {/* Canvas Section */}
               <div className="flex-1 ">
-                <div className="text-center mb-4">
-                  <h1 className="text-4xl font-bold mb-2 mt-4">Meme Editor</h1>
-                </div>
                 <div className="flex justify-center mb-4 mt-16">
                   <canvas
                     ref={canvasEl}
@@ -275,7 +273,7 @@ export const MemeEditor = () => {
                 </div>
               </div>
               {/* Controls Panel */}
-              <div className="space-y-6 mt-30">
+              <div className="space-y-6 mt-16">
                 {/* Image Controls */}
                 <Card className="bg-white/80 backdrop-blur-sm border-2 border-yellow-200 h-100 w-100">
                   <CardHeader>
@@ -435,7 +433,7 @@ export const MemeEditor = () => {
                         <img
                           src={generatedImageUrl || "/placeholder.svg"}
                           alt="Generated Meme"
-                          className="max-w-full max-h-96 rounded-lg shadow-lg"
+                          className="max-w-full max-h-72 rounded-lg shadow-lg"
                         />
                       </div>
                     )}
