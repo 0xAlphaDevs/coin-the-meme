@@ -101,7 +101,7 @@ export default function Home() {
                   </div>
                   <h3 className="text-xl font-bold text-gray-800 mb-3">Meme Editor</h3>
                   <p className="text-gray-600 leading-relaxed">
-                    Text editing with custom fonts, formatting options, and real-time preview.
+                    Create memes with custom fonts, colors, text styles, and templates.
                   </p>
                 </CardContent>
               </Card>
@@ -117,7 +117,7 @@ export default function Home() {
                   </div>
                   <h3 className="text-xl font-bold text-gray-800 mb-3">Zora Integration</h3>
                   <p className="text-gray-600 leading-relaxed">
-                    Direct connection to Zora protocol for minting your memes as coins.
+                    Integration with Zora to coin the meme.
                   </p>
                 </CardContent>
               </Card>
@@ -133,7 +133,7 @@ export default function Home() {
                   </div>
                   <h3 className="text-xl font-bold text-gray-800 mb-3">One-Click Mint</h3>
                   <p className="text-gray-600 leading-relaxed">
-                    Export your finished meme and mint it as an coin with a single click.
+                    Deploy your coin with image and relevant metadata instantly on Base Mainnet.
                   </p>
                 </CardContent>
               </Card>
@@ -164,15 +164,15 @@ export default function Home() {
                 <span className="text-xl font-bold text-white">2</span>
               </div>
               <h3 className="text-xl font-bold text-gray-800 mb-3">Export</h3>
-              <p className="text-gray-600">Download your finished meme or prepare it for minting on Zora.</p>
+              <p className="text-gray-600">Download your finished meme or prepare it for coining on Zora.</p>
             </div>
 
             <div className="text-center">
               <div className="w-16 h-16 bg-gradient-to-r from-green-600 to-yellow-500 rounded-full flex items-center justify-center mx-auto mb-6">
                 <span className="text-xl font-bold text-white">3</span>
               </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-3">Mint</h3>
-              <p className="text-gray-600">Connect your wallet and mint your meme as an coin on the Zora protocol.</p>
+              <h3 className="text-xl font-bold text-gray-800 mb-3">Coin the Meme</h3>
+              <p className="text-gray-600">Connect your wallet and coin your meme on the Zora protocol.</p>
             </div>
           </div>
         </div>
